@@ -2,20 +2,30 @@
 # check=skip=InvalidDefaultArgInFrom
 ARG UPSTREAM_IMAGE
 ARG UPSTREAM_TAG_SHA
+ARG UPSTREAM_DIGEST_AMD64
 
-FROM ${UPSTREAM_IMAGE}:${UPSTREAM_TAG_SHA}
+FROM ${UPSTREAM_IMAGE}@${UPSTREAM_DIGEST_AMD64}
 EXPOSE 8080
 ARG IMAGE_STATS
-ENV IMAGE_STATS=${IMAGE_STATS} WEBUI_PORTS="8080/tcp" LIBTORRENT="v1"
+ENV IMAGE_STATS=${IMAGE_STATS} WEBUI_PORTS="8080/tcp" LIBTORRENT="v2"
 
 RUN ln -s "${CONFIG_DIR}" "${APP_DIR}/qBittorrent"
 
 ARG VERSION_LIB1
 ARG VERSION_LIB2
 RUN curl -fsSL "https://github.com/userdocs/qbittorrent-nox-static/releases/download/${VERSION_LIB1%%/*}/x86_64-qbittorrent-nox" > "${APP_DIR}/qbittorrent-nox-lib1" && \
+    echo "0d3b7f4879b2a8b0413c6e76a471eeccfc5895d318bc615d76a7a17346767d34  ${APP_DIR}/qbittorrent-nox-lib1" | sha256sum -c - && \
     chmod 755 "${APP_DIR}/qbittorrent-nox-lib1" && \
     curl -fsSL "https://github.com/userdocs/qbittorrent-nox-static/releases/download/${VERSION_LIB2%%/*}/x86_64-qbittorrent-nox" > "${APP_DIR}/qbittorrent-nox-lib2" && \
+    echo "c1839caf9b7dbddee09e9a4394bb5b17dc70ecd7c3a9b45e84331d5a1389a645  ${APP_DIR}/qbittorrent-nox-lib2" | sha256sum -c - && \
     chmod 755 "${APP_DIR}/qbittorrent-nox-lib2"
+
+ARG VUETORRENT_VERSION
+RUN curl -fsSL "https://github.com/vuetorrent/vuetorrent/releases/download/v${VUETORRENT_VERSION}/vuetorrent.zip" > "/tmp/vuetorrent.zip" && \
+    echo "6e0c0e6acb563710aaf32cd165cf34da0e5d61bc1a68386e4cf97a648fa8171c  /tmp/vuetorrent.zip" | sha256sum -c - && \
+    unzip "/tmp/vuetorrent.zip" -d "${APP_DIR}" && \
+    rm "/tmp/vuetorrent.zip" && \
+    chmod -R u=rwX,go=rX "${APP_DIR}/vuetorrent"
 
 COPY root/ /
 RUN find /etc/s6-overlay/s6-rc.d -name "run*" -execdir chmod +x {} +
