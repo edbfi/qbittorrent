@@ -20,7 +20,8 @@ cleanup() {
 trap cleanup EXIT
 # Permit loopback API access only in this disposable test configuration.
 # Disable peer discovery; no torrents are added by this test.
-cat > "$config/qBittorrent.conf" <<'CONFIG'
+mkdir -p "$config/config"
+cat > "$config/config/qBittorrent.conf" <<'CONFIG'
 [Preferences]
 WebUI\LocalHostAuth=false
 [BitTorrent]
@@ -44,7 +45,7 @@ for mode in default v1; do
   jq -e --arg v "$lib_version" '.libtorrent | startswith($v)' "$evidence/build-info-$mode.json"
   docker exec "$name" curl -fsS http://127.0.0.1:8080/ > "$evidence/http-$mode.html"
   grep -qi qbittorrent "$evidence/http-$mode.html"
-  docker exec "$name" sh -ec 'test "$(stat -c %u /config/qBittorrent.conf)" = 1000; test -f /app/vuetorrent/public/index.html'
+  docker exec "$name" sh -ec 'test "$(stat -c %u /config/config/qBittorrent.conf)" = 1000; test -f /app/vuetorrent/public/index.html'
   if [[ "$mode" == default ]]; then
     docker exec "$name" curl -fsS --data-urlencode 'json={"alternative_webui_enabled":true,"alternative_webui_path":"/app/vuetorrent"}' http://127.0.0.1:8080/api/v2/app/setPreferences
     docker exec "$name" curl -fsS http://127.0.0.1:8080/ > "$evidence/vuetorrent.html"
