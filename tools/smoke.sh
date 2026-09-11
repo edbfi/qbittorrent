@@ -10,11 +10,13 @@ for lib in 1 2; do
 done
 name="qbittorrent-smoke-${GITHUB_RUN_ID:-local}-${RANDOM}"
 config=$(mktemp -d)
+host_uid=$(id -u)
+host_gid=$(id -g)
 cleanup() {
   docker logs "$name" 2>&1 | sed -E 's/(temporary password[^:]*:).*/\1 [REDACTED]/' > "$evidence/qbittorrent.log" || true
   docker rm -f "$name" >/dev/null 2>&1 || true
   # The image owns this disposable test directory as UID 1000.
-  docker run --rm --entrypoint sh -v "$config:/test-config" "$image" -c 'rm -rf /test-config/*' >/dev/null 2>&1 || true
+  docker run --rm --entrypoint sh -v "$config:/test-config" "$image" -c 'rm -rf /test-config/*; chown "$1:$2" /test-config' sh "$host_uid" "$host_gid" >/dev/null 2>&1 || true
   rmdir "$config" || true
 }
 trap cleanup EXIT
@@ -29,6 +31,9 @@ Session\DHTEnabled=false
 Session\LSDEnabled=false
 Session\PeXEnabled=false
 CONFIG
+# The base intentionally takes ownership of only /config itself.
+# Pre-existing fixture files must belong to the application user too.
+docker run --rm --entrypoint sh -v "$config:/test-config" "$image" -c 'chown -R 1000:1000 /test-config'
 for mode in default v1; do
   opts=()
   if [[ "$mode" == v1 ]]; then opts+=(-e LIBTORRENT=v1); fi
