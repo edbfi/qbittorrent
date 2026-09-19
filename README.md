@@ -10,9 +10,13 @@ Upstream runtime user, configuration paths and VPN support remain intact. CI tes
 
 Image build sources retain their GPL-3.0 license. qBittorrent, its dependencies and VueTorrent retain their respective upstream licenses.
 
-Shared CI and Renovate presets use automation `v3.0.1`. The custom checked merger
-is retired. Renovate automerge is explicitly disabled pending verified required
-CI enforcement and a native Renovate canary. The read-only PR policy check
-preserves sign-offs, Conventional Commit titles, review and hold requirements.
+Shared CI and Renovate presets use automation `v3.0.1`. Renovate owns dependency
+PR merging through its native rebase strategy, preserving commit author sign-offs.
+Strict, GitHub Actions-sourced required CI and PR policy checks must pass on an
+up-to-date branch; the automated merger has no bypass. The read-only PR policy
+check preserves sign-offs, Conventional Commit titles, reviews and hold labels.
+Independent policy events run to completion without cancelling one another.
+The shared release-age policy remains active, and Renovate configuration updates
+require manual merging. The custom checked merger remains retired.
 Native architecture builds and every existing container smoke assertion remain
 mandatory; image publication remains an explicit manual operation after CI.
