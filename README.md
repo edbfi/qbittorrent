@@ -9,3 +9,10 @@ Images are built and tested natively for amd64 and arm64. Publication is manual 
 Upstream runtime user, configuration paths and VPN support remain intact. CI tests application startup and web APIs without a VPN; live VPN connectivity and torrent transfer require separate integration validation.
 
 Image build sources retain their GPL-3.0 license. qBittorrent, its dependencies and VueTorrent retain their respective upstream licenses.
+
+Shared CI and Renovate presets use automation `v3.0.1`. The custom checked merger
+is retired. Renovate automerge is explicitly disabled pending verified required
+CI enforcement and a native Renovate canary. The read-only PR policy check
+preserves sign-offs, Conventional Commit titles, review and hold requirements.
+Native architecture builds and every existing container smoke assertion remain
+mandatory; image publication remains an explicit manual operation after CI.
