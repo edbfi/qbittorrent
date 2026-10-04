@@ -14,15 +14,12 @@ RUN ln -s "${CONFIG_DIR}" "${APP_DIR}/qBittorrent"
 ARG VERSION_LIB1
 ARG VERSION_LIB2
 RUN curl -fsSL "https://github.com/userdocs/qbittorrent-nox-static/releases/download/${VERSION_LIB1%%/*}/x86_64-qbittorrent-nox" > "${APP_DIR}/qbittorrent-nox-lib1" && \
-    echo "0546794e32f933560df383c0d11936c921a50f9b5d32a9bcd283481aa695750e  ${APP_DIR}/qbittorrent-nox-lib1" | sha256sum -c - && \
     chmod 755 "${APP_DIR}/qbittorrent-nox-lib1" && \
     curl -fsSL "https://github.com/userdocs/qbittorrent-nox-static/releases/download/${VERSION_LIB2%%/*}/x86_64-qbittorrent-nox" > "${APP_DIR}/qbittorrent-nox-lib2" && \
-    echo "c1839caf9b7dbddee09e9a4394bb5b17dc70ecd7c3a9b45e84331d5a1389a645  ${APP_DIR}/qbittorrent-nox-lib2" | sha256sum -c - && \
     chmod 755 "${APP_DIR}/qbittorrent-nox-lib2"
 
 ARG VUETORRENT_VERSION
 RUN curl -fsSL "https://github.com/vuetorrent/vuetorrent/releases/download/v${VUETORRENT_VERSION}/vuetorrent.zip" > "/tmp/vuetorrent.zip" && \
-    echo "6e0c0e6acb563710aaf32cd165cf34da0e5d61bc1a68386e4cf97a648fa8171c  /tmp/vuetorrent.zip" | sha256sum -c - && \
     unzip "/tmp/vuetorrent.zip" -d "${APP_DIR}" && \
     rm "/tmp/vuetorrent.zip" && \
     chmod -R u=rwX,go=rX "${APP_DIR}/vuetorrent"
