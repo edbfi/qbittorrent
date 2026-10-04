@@ -4,7 +4,7 @@ Based on [hotio/qbittorrent](https://github.com/hotio/qbittorrent), with libtorr
 
 [Documentation and examples](https://web.edb.fi/containers/qbittorrent/).
 
-Downloaded binaries and VueTorrent assets are checked against pinned SHA-256 digests. Version updates must update these digests together.
+Downloaded binaries, VueTorrent assets and the base image follow the versions in `meta.json`, which call-update keeps current.
 
 Upstream runtime user, configuration paths and VPN support remain intact.
 
