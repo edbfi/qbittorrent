@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/qbittorrent.svg" alt="qbittorrent logo" width="256" height="256">
+  <img src="assets/qbittorrent.svg" alt="qbittorrent logo" width="160" height="160">
 </p>
 <h1 align="center">qbittorrent</h1>
 <p align="center"><strong>qBittorrent and VueTorrent in a VPN-ready container.</strong></p>
@@ -10,12 +10,6 @@
   <a href="https://github.com/VueTorrent/VueTorrent" title="VueTorrent source"><img src="https://img.shields.io/badge/VueTorrent-42B883?style=flat" alt="VueTorrent"></a>
 </p>
 
-Based on [hotio/qbittorrent](https://github.com/hotio/qbittorrent), with libtorrent v2 selected by default and VueTorrent bundled in `/app/vuetorrent`. Set `LIBTORRENT=v1` to use the retained alternative binary.
+Based on [hotio/qbittorrent](https://github.com/hotio/qbittorrent), with libtorrent v2 selected by default and VueTorrent bundled in `/app/vuetorrent`. Set `LIBTORRENT=v1` to use the alternative binary.
 
 [Documentation and examples](https://web.edb.fi/containers/qbittorrent/).
-
-Downloaded binaries, VueTorrent assets and the base image follow the versions in `meta.json`, which call-update keeps current.
-
-Upstream runtime user, configuration paths and VPN support remain intact.
-
-Image build sources retain their GPL-3.0 license. qBittorrent, its dependencies and VueTorrent retain their respective upstream licenses.
